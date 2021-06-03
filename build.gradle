@@ -25,12 +25,10 @@ micronaut {
 
 dependencies {
     kapt("io.micronaut.data:micronaut-data-processor")
-    implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
-
-//    implementation("io.micronaut:micronaut-validation")
-
     implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
+
+    implementation("org.hibernate.validator:hibernate-validator:6.1.6.Final")
 
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.grpc:micronaut-grpc-runtime")
@@ -38,22 +36,29 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-
+    implementation("io.micronaut:micronaut-http-client")
+//    implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut.xml:micronaut-jackson-xml")
 
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+//    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:testcontainers")
 
-//    compile("io.micronaut.configuration:micronaut-hibernate-validator")
-
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
-
+    testImplementation("com.h2database:h2")
     testImplementation("io.micronaut:micronaut-http-client")
 
 
+    testImplementation("org.mockito:mockito-core:3.8.0")
+//    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin")
+//    testImplementation("org.mockito.kotlin:mockito-kotlin")
+
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("org.mockito:mockito-inline:2.13.0")
 }
 
 
