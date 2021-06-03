@@ -1,8 +1,8 @@
-package br.com.zupacademy.william.chavepix
+package br.com.zupacademy.william.pixkey
 
-import br.com.zupacademy.william.KeymanagerGrpcRequest
+import br.com.zupacademy.william.RegistryRequest
 
-fun KeymanagerGrpcRequest.toModel() : NewPixKey {
+fun RegistryRequest.toModel() : NewPixKey {
     return NewPixKey(
         idCustomer = idCliente,
         keyType = KeyType.valueOf(tipoChave.name),

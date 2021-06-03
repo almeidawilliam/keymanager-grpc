@@ -1,4 +1,4 @@
-package br.com.zupacademy.william.chavepix
+package br.com.zupacademy.william.pixkey
 
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDateTime

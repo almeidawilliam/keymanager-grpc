@@ -1,12 +1,13 @@
 package br.com.zupacademy.william.validation
 
-import br.com.zupacademy.william.chavepix.NewPixKey
+import br.com.zupacademy.william.pixkey.NewPixKey
 import javax.inject.Singleton
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
-import kotlin.annotation.AnnotationRetention.*
-import kotlin.annotation.AnnotationTarget.*
+import kotlin.annotation.AnnotationRetention.RUNTIME
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.TYPE
 import kotlin.reflect.KClass
 
 @MustBeDocumented

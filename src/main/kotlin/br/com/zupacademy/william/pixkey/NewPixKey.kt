@@ -1,4 +1,4 @@
-package br.com.zupacademy.william.chavepix
+package br.com.zupacademy.william.pixkey
 
 import br.com.zupacademy.william.validation.ValidPixKey
 import br.com.zupacademy.william.validation.ValidUUID

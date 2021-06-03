@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.client.itau
 
-import br.com.zupacademy.william.chavepix.AccountType
+import br.com.zupacademy.william.pixkey.AccountType
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class AccountResponse(

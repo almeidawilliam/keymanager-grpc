@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.client.bcb
 
-import br.com.zupacademy.william.chavepix.AccountType
+import br.com.zupacademy.william.pixkey.AccountType
 
 enum class BCBAccountType(val accountType: AccountType) {
 

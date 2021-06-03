@@ -1,4 +1,4 @@
-package br.com.zupacademy.william.chavepix
+package br.com.zupacademy.william.pixkey
 
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jpa.repository.JpaRepository
@@ -6,5 +6,6 @@ import io.micronaut.data.jpa.repository.JpaRepository
 @Repository
 interface PixKeyRepository : JpaRepository<PixKey, Long> {
 
-    fun existsByPixKeyValue(chave: String): Boolean
+    fun existsByPixKeyValue(key: String): Boolean
+    fun deleteByIdCustomerAndPixKeyValue(idCustomer: String, keyValue: String)
 }

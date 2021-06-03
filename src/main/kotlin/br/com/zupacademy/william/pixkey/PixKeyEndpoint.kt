@@ -1,4 +1,4 @@
-package br.com.zupacademy.william.chavepix
+package br.com.zupacademy.william.pixkey
 
 import br.com.zupacademy.william.*
 import br.com.zupacademy.william.exception.AccountNotFoundException
@@ -7,24 +7,23 @@ import com.google.protobuf.Any
 import io.grpc.Status
 import io.grpc.protobuf.StatusProto
 import io.grpc.stub.StreamObserver
-import io.micronaut.http.client.exceptions.HttpClientResponseException
 import javax.inject.Inject
 import javax.inject.Singleton
 import javax.validation.ConstraintViolationException
 
 @Singleton
 class PixKeyEndpoint(@field:Inject val pixKeyService: PixKeyService) :
-    KeymanagerGrpcServiceGrpc.KeymanagerGrpcServiceImplBase() {
+    KeymanagerRegistryGrpcServiceGrpc.KeymanagerRegistryGrpcServiceImplBase() {
 
     override fun registry(
-        request: KeymanagerGrpcRequest?,
-        responseObserver: StreamObserver<KeymanagerGrpcReply>?
+        request: RegistryRequest?,
+        responseObserver: StreamObserver<RegistryResponse>?
     ) {
         try {
             val novaChavePix = request!!.toModel()
             val response = pixKeyService.save(novaChavePix)
 
-            val keymanagerGrpcReply = KeymanagerGrpcReply.newBuilder()
+            val keymanagerGrpcReply = RegistryResponse.newBuilder()
                 .setIdPix(response.id.toString())
                 .build()
 
@@ -40,14 +39,14 @@ class PixKeyEndpoint(@field:Inject val pixKeyService: PixKeyService) :
             val exceptionResposta = StatusProto.toStatusRuntimeException(statusProto)
             responseObserver!!.onError(exceptionResposta)
 
-        } catch (exception: HttpClientResponseException) {
-            val statusProto = com.google.rpc.Status.newBuilder()
-                .setCode(exception.status.code)
-                .setMessage(exception.message)
-                .build()
-
-            val exceptionResposta = StatusProto.toStatusRuntimeException(statusProto)
-            responseObserver!!.onError(exceptionResposta)
+//        } catch (exception: HttpClientResponseException) {
+//            val statusProto = com.google.rpc.Status.newBuilder()
+//                .setCode(exception.status.code)
+//                .setMessage(exception.message)
+//                .build()
+//
+//            val exceptionResposta = StatusProto.toStatusRuntimeException(statusProto)
+//            responseObserver!!.onError(exceptionResposta)
 
         } catch (exception: ConstraintViolationException) {
             val errors = exception.constraintViolations
@@ -72,14 +71,14 @@ class PixKeyEndpoint(@field:Inject val pixKeyService: PixKeyService) :
             val exceptionResposta = StatusProto.toStatusRuntimeException(statusProto)
             responseObserver!!.onError(exceptionResposta)
 
-        } catch (exception: IllegalArgumentException) {
-            val statusProto = com.google.rpc.Status.newBuilder()
-                .setCode(Status.INVALID_ARGUMENT.code.value())
-                .setMessage(exception.message)
-                .build()
-
-            val exceptionResposta = StatusProto.toStatusRuntimeException(statusProto)
-            responseObserver!!.onError(exceptionResposta)
+//        } catch (exception: IllegalArgumentException) {
+//            val statusProto = com.google.rpc.Status.newBuilder()
+//                .setCode(Status.INVALID_ARGUMENT.code.value())
+//                .setMessage(exception.message)
+//                .build()
+//
+//            val exceptionResposta = StatusProto.toStatusRuntimeException(statusProto)
+//            responseObserver!!.onError(exceptionResposta)
         } catch (exception: AccountNotFoundException) {
             val statusProto = com.google.rpc.Status.newBuilder()
                 .setCode(exception.status.code.value())
@@ -90,4 +89,6 @@ class PixKeyEndpoint(@field:Inject val pixKeyService: PixKeyService) :
             responseObserver!!.onError(exceptionResposta)
         }
     }
+
+//    override fun remov
 }

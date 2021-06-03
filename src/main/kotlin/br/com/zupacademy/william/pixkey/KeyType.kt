@@ -1,7 +1,7 @@
-package br.com.zupacademy.william.chavepix
+package br.com.zupacademy.william.pixkey
 
-import io.micronaut.validation.validator.constraints.EmailValidator
-//import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
+import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
 
 enum class KeyType {
 
@@ -15,13 +15,10 @@ enum class KeyType {
                 return false
             }
 
-            return true
-
-//            TODO - Corrigir import da dependencia do validator
-//            return CPFValidator().run {
-//                initialize(null)
-//                isValid(chave, null)
-//            }
+            return CPFValidator().run {
+                initialize(null)
+                isValid(chave, null)
+            }
         }
     },
     PHONE {

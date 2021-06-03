@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.client.itau
 
-import br.com.zupacademy.william.chavepix.AccountType
+import br.com.zupacademy.william.pixkey.AccountType
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
