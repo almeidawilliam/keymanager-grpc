@@ -5,6 +5,7 @@ import br.com.zupacademy.william.KeyType
 import br.com.zupacademy.william.KeymanagerRegistryGrpcServiceGrpc
 import br.com.zupacademy.william.RegistryRequest
 import br.com.zupacademy.william.client.bcb.ChavePixBCBClient
+import br.com.zupacademy.william.client.bcb.CreatePixKeyResponse
 import br.com.zupacademy.william.client.itau.AccountHolder
 import br.com.zupacademy.william.client.itau.AccountResponse
 import br.com.zupacademy.william.client.itau.Institution
@@ -34,7 +35,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @MicronautTest(transactional = false)
-internal class PixKeyEndpointTest {
+internal class PixKeyRegistryEndpointTest {
 
     @field:Inject
     lateinit var grpcClient: KeymanagerRegistryGrpcServiceGrpc.KeymanagerRegistryGrpcServiceBlockingStub
@@ -84,6 +85,9 @@ internal class PixKeyEndpointTest {
             )
         )
 
+        `when`(bcbClient.criarChave(any()))
+            .thenReturn(HttpResponse.created(CreatePixKeyResponse(request.valorChave)))
+
 //        val spy = spy(pixKeyRepository)
         val response = grpcClient.registry(request)
 
@@ -100,7 +104,8 @@ internal class PixKeyEndpointTest {
                 UUID.randomUUID().toString(),
                 br.com.zupacademy.william.pixkey.AccountType.CONTA_CORRENTE,
                 "123",
-                "23"
+                "23",
+                "123"
             )
         )
 
