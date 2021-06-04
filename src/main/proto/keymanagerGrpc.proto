@@ -7,9 +7,59 @@ option objc_class_prefix = "HLW";
 
 package br.com.zupacademy.william;
 
-service KeymanagerGrpcService {
-  rpc registry (KeymanagerGrpcRequest) returns (KeymanagerGrpcReply) {}
+import "google/protobuf/timestamp.proto";
+
+service KeymanagerRegistryGrpcService {
+  rpc registry (RegistryRequest) returns (RegistryResponse) {}
 }
+
+service KeymanagerRemoveGrpcService {
+  rpc remove (RemoveRequest) returns (RemoveResponse) {}
+}
+
+service KeymanagerFindGrpcService {
+  rpc find (FindRequest) returns (FindResponse) {}
+}
+
+//find
+message FindRequest {
+  int64 idPix = 1;
+  string idCustomer = 2;
+}
+
+message FindResponse {
+  int64 idPix = 1;
+  KeyType keyType = 2;
+  string keyValue = 3;
+  Customer customer = 4;
+  CustomerAccount customerAccount = 5;
+  google.protobuf.Timestamp createdAt = 6;
+}
+
+message Customer {
+  string idCustomer = 1;
+  string name = 2;
+  string cpf = 3;
+}
+
+message CustomerAccount {
+  string institutionName = 1;
+  string agency = 2;
+  string account = 3;
+  AccountType accountType = 4;
+}
+
+//remove
+message RemoveRequest {
+  int64 idPix = 1;
+  string idCustomer = 2;
+}
+
+message RemoveResponse {
+  int64 idPix = 1;
+  string idCustomer = 2;
+}
+//registry
 
 message CorpoDeErro {
   repeated ErrorDetails errors = 1;
@@ -34,13 +84,13 @@ enum AccountType {
   CONTA_POUPANCA = 2;
 }
 
-message KeymanagerGrpcRequest {
+message RegistryRequest {
   string idCliente = 1;
   KeyType tipoChave = 2;
   string valorChave = 3;
   AccountType tipoConta = 4;
 }
 
-message KeymanagerGrpcReply {
+message RegistryResponse {
   string idPix = 1;
 }
