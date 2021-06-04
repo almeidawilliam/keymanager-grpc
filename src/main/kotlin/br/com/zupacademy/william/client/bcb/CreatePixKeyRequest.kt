@@ -2,7 +2,7 @@ package br.com.zupacademy.william.client.bcb
 
 import br.com.zupacademy.william.client.itau.AccountResponse
 import br.com.zupacademy.william.pixkey.KeyType
-import br.com.zupacademy.william.pixkey.NewPixKey
+import br.com.zupacademy.william.pixkey.registry.NewPixKey
 
 data class CreatePixKeyRequest(
     val NewPixKey: NewPixKey,
