@@ -11,6 +11,7 @@ import br.com.zupacademy.william.exception.AccountNotFoundException
 import br.com.zupacademy.william.exception.PixKeyAlreadyExistsException
 import br.com.zupacademy.william.exception.PixKeyNotFoundException
 import br.com.zupacademy.william.pixkey.registry.NewPixKey
+import com.google.protobuf.Timestamp
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.validation.Validated
 import java.time.ZoneOffset
@@ -114,6 +115,34 @@ class PixKeyService(
                     .setNanos(pixKey.createdAt.nano)
                     .build()
             )
+            .build()
+    }
+
+    fun list(idCustomer: String): ListResponse {
+        val pixKeys = pixKeyRepository.findAllByIdCustomer(idCustomer)
+            .map { pixKey ->
+                br.com.zupacademy.william.PixKey.newBuilder()
+                    .setIdPix(pixKey.id!!)
+                    .setKeyType(KeyType.valueOf(pixKey.pixKeyType.name))
+                    .setKeyValue(pixKey.pixKeyValue)
+                    .setAccountType(AccountType.valueOf(pixKey.accountType.name))
+                    .setCreatedAt(
+                        Timestamp.newBuilder()
+                            .setSeconds(pixKey.createdAt.toEpochSecond(ZoneOffset.UTC))
+                            .setNanos(pixKey.createdAt.nano)
+                            .build()
+                    )
+                    .build()
+            }
+            .toList()
+
+        if (pixKeys.isEmpty()) {
+            throw PixKeyNotFoundException("Chaves Pix não encontrada para o cliente '$idCustomer'")
+        }
+
+        return ListResponse.newBuilder()
+            .setIdCustomer(idCustomer)
+            .addAllPixKeys(pixKeys)
             .build()
     }
 }

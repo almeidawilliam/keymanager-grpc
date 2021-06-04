@@ -21,6 +21,28 @@ service KeymanagerFindGrpcService {
   rpc find (FindRequest) returns (FindResponse) {}
 }
 
+service KeymanagerListGrpcService {
+  rpc list (ListRequest) returns (ListResponse) {}
+}
+
+//list
+message ListRequest {
+  string idCustomer = 1;
+}
+
+message ListResponse {
+  string idCustomer = 1;
+  repeated PixKey pixKeys = 2;
+}
+
+message PixKey {
+  int64 idPix = 1;
+  KeyType keyType = 2;
+  string keyValue = 3;
+  AccountType accountType = 4;
+  google.protobuf.Timestamp createdAt = 5;
+}
+
 //find
 message FindRequest {
   int64 idPix = 1;

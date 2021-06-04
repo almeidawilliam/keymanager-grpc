@@ -10,4 +10,5 @@ interface PixKeyRepository : JpaRepository<PixKey, Long> {
     fun existsByPixKeyValue(key: String): Boolean
     fun deleteByIdCustomerAndPixKeyValue(idCustomer: String, keyValue: String)
     fun findByIdAndIdCustomer(idPix: Long, idCustomer: String): Optional<PixKey>
+    fun findAllByIdCustomer(idCustomer: String): List<PixKey>
 }
