@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.validation
 
-import br.com.zupacademy.william.pixkey.NewPixKey
+import br.com.zupacademy.william.pixkey.registry.NewPixKey
 import javax.inject.Singleton
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator

@@ -5,6 +5,9 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+/* TODO
+ *      - nao guardar dados do cliente, somente sua referencia
+ */
 class PixKey(
 
     @Enumerated(EnumType.STRING)
@@ -15,6 +18,7 @@ class PixKey(
     val accountType: AccountType,
     val agency: String,
     val accountNumber: String,
+    val ispb: String
 ) {
     @Id
     @GeneratedValue

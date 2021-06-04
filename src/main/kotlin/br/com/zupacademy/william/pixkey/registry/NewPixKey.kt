@@ -1,8 +1,10 @@
-package br.com.zupacademy.william.pixkey
+package br.com.zupacademy.william.pixkey.registry
 
+import br.com.zupacademy.william.pixkey.AccountType
+import br.com.zupacademy.william.pixkey.KeyType
+import br.com.zupacademy.william.pixkey.PixKey
 import br.com.zupacademy.william.validation.ValidPixKey
 import br.com.zupacademy.william.validation.ValidUUID
-import java.util.*
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
@@ -20,14 +22,15 @@ class NewPixKey(
     val accountType: AccountType
 ) {
 
-    fun toModel(agencia: String, conta: String): PixKey {
+    fun toModel(agencia: String, conta: String, ispb: String, keyValue: String): PixKey {
         return PixKey(
             idCustomer = idCustomer,
             pixKeyType = keyType,
-            pixKeyValue = if (this.keyType == KeyType.RANDOM) UUID.randomUUID().toString() else this.key,
+            pixKeyValue = keyValue,
             accountType = accountType,
             agency = agencia,
-            accountNumber = conta
+            accountNumber = conta,
+            ispb = ispb
         )
     }
 }
