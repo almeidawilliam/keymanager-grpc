@@ -1,4 +1,4 @@
-package br.com.zupacademy.william.pixkey
+package br.com.zupacademy.william.pixkey.registry
 
 import br.com.zupacademy.william.AccountType
 import br.com.zupacademy.william.KeyType
@@ -10,6 +10,9 @@ import br.com.zupacademy.william.client.itau.AccountHolder
 import br.com.zupacademy.william.client.itau.AccountResponse
 import br.com.zupacademy.william.client.itau.Institution
 import br.com.zupacademy.william.client.itau.ItauCustomerAccountClient
+import br.com.zupacademy.william.pixkey.PixKey
+import br.com.zupacademy.william.pixkey.PixKeyRepository
+import br.com.zupacademy.william.pixkey.PixKeyService
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
