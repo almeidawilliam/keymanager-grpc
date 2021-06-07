@@ -12,6 +12,7 @@ import br.com.zupacademy.william.exception.PixKeyAlreadyExistsException
 import br.com.zupacademy.william.exception.PixKeyNotFoundException
 import br.com.zupacademy.william.pixkey.registry.NewPixKey
 import com.google.protobuf.Timestamp
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.validation.Validated
 import java.time.ZoneOffset
@@ -87,8 +88,14 @@ class PixKeyService(
 //        if (response.status == HttpStatus.OK) {
 //
 //        }
+        val accountNullable =
+            itauCustomerAccountClient.findCustomerAccount(pixKey.idCustomer, pixKey.accountType)
 
-        val customerAccountResponse = itauCustomerAccountClient.findCustomerAccount(idCustomer, pixKey.accountType)
+        if (accountNullable.status != HttpStatus.OK) {
+            throw AccountNotFoundException("'${pixKey.accountType}' não encontrada para cliente '${pixKey.idCustomer}'")
+        }
+
+        val customerAccountResponse = accountNullable.body()!!
 
         return FindResponse.newBuilder()
             .setIdPix(pixKey.id!!)
@@ -96,17 +103,17 @@ class PixKeyService(
             .setKeyValue(pixKey.pixKeyValue)
             .setCustomer(
                 Customer.newBuilder()
-                    .setIdCustomer(customerAccountResponse.body()!!.accountHolder.id)
-                    .setCpf(customerAccountResponse.body()!!.accountHolder.cpf)
-                    .setName(customerAccountResponse.body()!!.accountHolder.nome)
+                    .setIdCustomer(customerAccountResponse.accountHolder.id)
+                    .setCpf(customerAccountResponse.accountHolder.cpf)
+                    .setName(customerAccountResponse.accountHolder.nome)
                     .build()
             )
             .setCustomerAccount(
                 CustomerAccount.newBuilder()
-                    .setInstitutionName(customerAccountResponse.body()!!.institution.nome)
-                    .setAccountType(AccountType.valueOf(customerAccountResponse.body()!!.accountType.name))
-                    .setAgency(customerAccountResponse.body()!!.agency)
-                    .setAccount(customerAccountResponse.body()!!.accountNumber)
+                    .setInstitutionName(customerAccountResponse.institution.nome)
+                    .setAccountType(AccountType.valueOf(customerAccountResponse.accountType.name))
+                    .setAgency(customerAccountResponse.agency)
+                    .setAccount(customerAccountResponse.accountNumber)
                     .build()
             )
             .setCreatedAt(
