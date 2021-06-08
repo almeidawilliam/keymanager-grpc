@@ -28,25 +28,25 @@ class PixKeyService(
     @field:Inject val bcbClient: ChavePixBCBClient
 ) {
 
-    fun save(@Valid newPixKeyKey: NewPixKey): PixKey {
-        if (pixKeyRepository.existsByPixKeyValue(newPixKeyKey.key)) {
-            throw PixKeyAlreadyExistsException("Chave pix '${newPixKeyKey.key}' já está cadastrada")
+    fun save(@Valid newPixKey: NewPixKey): PixKey {
+        if (pixKeyRepository.existsByPixKeyValue(newPixKey.key)) {
+            throw PixKeyAlreadyExistsException("Chave pix '${newPixKey.key}' já está cadastrada")
         }
 
         val possivelConta =
-            itauCustomerAccountClient.findCustomerAccount(newPixKeyKey.idCustomer, newPixKeyKey.accountType)
+            itauCustomerAccountClient.findCustomerAccount(newPixKey.idCustomer, newPixKey.accountType)
 
         if (possivelConta.body() == null) {
-            throw AccountNotFoundException("'${newPixKeyKey.accountType}' não encontrada para cliente '${newPixKeyKey.idCustomer}'")
+            throw AccountNotFoundException("'${newPixKey.accountType}' não encontrada para cliente '${newPixKey.idCustomer}'")
         }
 
-        val createPixKeyRequest = CreatePixKeyRequest(newPixKeyKey, possivelConta.body()!!)
+        val createPixKeyRequest = CreatePixKeyRequest(newPixKey, possivelConta.body()!!)
 
 //        TODO - HttpClientResponseException nao para de ser lançada na stacktrace
         try {
             val criarChave = bcbClient.criarChave(createPixKeyRequest)
 
-            val chavePix = newPixKeyKey.toModel(
+            val chavePix = newPixKey.toModel(
                 possivelConta.body()!!.agency,
                 possivelConta.body()!!.accountNumber,
                 possivelConta.body()!!.institution.ispb,
@@ -57,7 +57,7 @@ class PixKeyService(
 
         } catch (exception: HttpClientResponseException) {
 //        if (criarChave.status == HttpStatus.UNPROCESSABLE_ENTITY)
-            throw PixKeyAlreadyExistsException("A chave '${newPixKeyKey.key}' já foi registrada em outra instituição")
+            throw PixKeyAlreadyExistsException("A chave '${newPixKey.key}' já foi registrada em outra instituição")
         }
     }
 
