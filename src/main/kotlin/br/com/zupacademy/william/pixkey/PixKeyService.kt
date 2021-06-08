@@ -44,7 +44,7 @@ class PixKeyService(
 
 //        TODO - HttpClientResponseException nao para de ser lançada na stacktrace
         try {
-            val criarChave = bcbClient.criarChave(createPixKeyRequest)
+            val criarChave = bcbClient.registryKey(createPixKeyRequest)
 
             val chavePix = newPixKey.toModel(
                 possivelConta.body()!!.agency,
