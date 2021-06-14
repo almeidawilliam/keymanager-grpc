@@ -5,7 +5,7 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
 
-@Client("http://localhost:8082/api/v1/pix/keys")
+@Client("\${bcb.pix.url}")
 interface ChavePixBCBClient {
 
     @Get("/{key}", produces = [MediaType.APPLICATION_XML])

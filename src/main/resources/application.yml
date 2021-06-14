@@ -4,12 +4,12 @@ micronaut:
 
 datasources:
   default:
-    url: jdbc:mysql://localhost:3306/mysql-keymanager-rpc
-    driverClassName: com.mysql.cj.jdbc.Driver
-    username: keymanager-rpc
-    password: 123
-    schema-generate: create-drop
-    dialect: MYSQL
+    url: '${DB_URI:`jdbc:mysql://localhost:3306/mysql-keymanager-rpc`}'
+    username: '${DB_USER:keymanager-rpc}'
+    password: '${DB_PASSWORD:123}'
+    dialect: '${DB_DIALECT:MYSQL}'
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    schema-generate: create-drop
 
 jpa:
   default:
@@ -18,3 +18,11 @@ jpa:
         hbm2ddl:
           auto: create-drop
         show_sql: true
+
+itau:
+  contas:
+    url: '${ITAU_URL:`http://localhost:9091/api/v1`}'
+
+bcb:
+  pix:
+    url: '${BCB_URL:`http://localhost:8082/api/v1/pix/keys`}'
