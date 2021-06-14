@@ -88,7 +88,7 @@ internal class PixKeyRegistryEndpointTest {
             )
         )
 
-        `when`(bcbClient.criarChave(any()))
+        `when`(bcbClient.registryKey(any()))
             .thenReturn(HttpResponse.created(CreatePixKeyResponse(request.valorChave)))
 
 //        val spy = spy(pixKeyRepository)
@@ -143,7 +143,7 @@ internal class PixKeyRegistryEndpointTest {
         `when`(itauCustomerAccountClient.findCustomerAccount(any(), any()))
             .thenReturn(HttpResponse.ok(mock(AccountResponse::class.java, Mockito.RETURNS_MOCKS)))
 
-        `when`(bcbClient.criarChave(any()))
+        `when`(bcbClient.registryKey(any()))
             .thenThrow(HttpClientResponseException::class.java)
 
         val response = assertThrows<StatusRuntimeException> {
