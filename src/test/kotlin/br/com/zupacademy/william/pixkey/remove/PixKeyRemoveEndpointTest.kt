@@ -63,7 +63,6 @@ internal class PixKeyRemoveEndpointTest {
             grpcClient.remove(mock(RemoveRequest::class.java))
         }
 
-        println(response)
         assertEquals("NOT_FOUND: Chave Pix '0' não encontrada para o cliente ''", response.message)
         assertEquals(Status.NOT_FOUND.code, response.status.code)
     }
