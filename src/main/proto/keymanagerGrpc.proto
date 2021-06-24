@@ -9,19 +9,19 @@ package br.com.zupacademy.william;
 
 import "google/protobuf/timestamp.proto";
 
-service KeymanagerRegistryGrpcService {
+service KeymanagerRegistryService {
   rpc registry (RegistryRequest) returns (RegistryResponse) {}
 }
 
-service KeymanagerRemoveGrpcService {
+service KeymanagerRemoveService {
   rpc remove (RemoveRequest) returns (RemoveResponse) {}
 }
 
-service KeymanagerFindGrpcService {
+service KeymanagerFindService {
   rpc find (FindRequest) returns (FindResponse) {}
 }
 
-service KeymanagerListGrpcService {
+service KeymanagerListService {
   rpc list (ListRequest) returns (ListResponse) {}
 }
 
@@ -81,19 +81,10 @@ message RemoveResponse {
   int64 idPix = 1;
   string idCustomer = 2;
 }
+
 //registry
-
-message CorpoDeErro {
-  repeated ErrorDetails errors = 1;
-}
-
-message ErrorDetails {
-  string campo = 1;
-  string erro = 2;
-}
-
 enum KeyType {
-  CHAVE_INVALIDA = 0;
+  INVALID_KEY_TYPE = 0;
   CPF = 1;
   PHONE = 2;
   EMAIL = 3;
@@ -101,18 +92,28 @@ enum KeyType {
 }
 
 enum AccountType {
-  CONTA_INVALIDA = 0;
+  INVALID_ACCOUNT = 0;
   CONTA_CORRENTE = 1;
   CONTA_POUPANCA = 2;
 }
 
 message RegistryRequest {
-  string idCliente = 1;
-  KeyType tipoChave = 2;
-  string valorChave = 3;
-  AccountType tipoConta = 4;
+  string idCustomer = 1;
+  KeyType keyType = 2;
+  string keyValue = 3;
+  AccountType accountType = 4;
 }
 
 message RegistryResponse {
   string idPix = 1;
+}
+
+//errors
+message ErrorBody {
+  repeated ErrorDetails errors = 1;
+}
+
+message ErrorDetails {
+  string field = 1;
+  string message = 2;
 }
