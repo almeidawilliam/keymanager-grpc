@@ -40,6 +40,7 @@ class PixKeyService(
             throw AccountNotFoundException("'${newPixKey.accountType}' não encontrada para cliente '${newPixKey.idCustomer}'")
         }
 
+        val conta = possivelConta.body()!!
         val createPixKeyRequest = CreatePixKeyRequest(newPixKey, possivelConta.body()!!)
 
 //        TODO - HttpClientResponseException nao para de ser lançada na stacktrace
@@ -47,9 +48,9 @@ class PixKeyService(
             val criarChave = bcbClient.registryKey(createPixKeyRequest)
 
             val chavePix = newPixKey.toModel(
-                possivelConta.body()!!.agency,
-                possivelConta.body()!!.accountNumber,
-                possivelConta.body()!!.institution.ispb,
+                conta.agency,
+                conta.accountNumber,
+                conta.institution.ispb,
                 criarChave.body()!!.key
             )
 

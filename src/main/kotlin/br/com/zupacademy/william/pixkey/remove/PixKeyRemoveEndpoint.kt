@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.pixkey.remove
 
-import br.com.zupacademy.william.KeymanagerRemoveGrpcServiceGrpc
+import br.com.zupacademy.william.KeymanagerRemoveServiceGrpc
 import br.com.zupacademy.william.RemoveRequest
 import br.com.zupacademy.william.RemoveResponse
 import br.com.zupacademy.william.pixkey.PixKeyService
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @ErrorAdvice
 @Singleton
 class PixKeyRemoveEndpoint(@field:Inject val pixKeyService: PixKeyService) :
-    KeymanagerRemoveGrpcServiceGrpc.KeymanagerRemoveGrpcServiceImplBase() {
+    KeymanagerRemoveServiceGrpc.KeymanagerRemoveServiceImplBase() {
 
     override fun remove(request: RemoveRequest?, responseObserver: StreamObserver<RemoveResponse>?) {
         pixKeyService.delete(request!!.idCustomer, request.idPix)

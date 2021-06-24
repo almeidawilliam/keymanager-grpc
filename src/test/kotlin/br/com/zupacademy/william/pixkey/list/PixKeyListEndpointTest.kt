@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.pixkey.list
 
-import br.com.zupacademy.william.KeymanagerListGrpcServiceGrpc
+import br.com.zupacademy.william.KeymanagerListServiceGrpc
 import br.com.zupacademy.william.ListRequest
 import br.com.zupacademy.william.pixkey.AccountType
 import br.com.zupacademy.william.pixkey.KeyType
@@ -28,7 +28,7 @@ internal class PixKeyListEndpointTest {
     lateinit var pixKeyRepository: PixKeyRepository
 
     @field:Inject
-    lateinit var grpcClient: KeymanagerListGrpcServiceGrpc.KeymanagerListGrpcServiceBlockingStub
+    lateinit var grpcClient: KeymanagerListServiceGrpc.KeymanagerListServiceBlockingStub
 
     @BeforeEach
     fun setup() {
@@ -103,9 +103,9 @@ internal class PixKeyListEndpointTest {
     class Clients {
         @Singleton
         fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel):
-                KeymanagerListGrpcServiceGrpc.KeymanagerListGrpcServiceBlockingStub {
+                KeymanagerListServiceGrpc.KeymanagerListServiceBlockingStub {
 
-            return KeymanagerListGrpcServiceGrpc.newBlockingStub(channel)
+            return KeymanagerListServiceGrpc.newBlockingStub(channel)
         }
     }
 }

@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.pixkey.remove
 
-import br.com.zupacademy.william.KeymanagerRemoveGrpcServiceGrpc
+import br.com.zupacademy.william.KeymanagerRemoveServiceGrpc
 import br.com.zupacademy.william.RemoveRequest
 import br.com.zupacademy.william.client.bcb.ChavePixBCBClient
 import br.com.zupacademy.william.pixkey.AccountType
@@ -18,7 +18,6 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import java.util.*
 import javax.inject.Inject
@@ -31,7 +30,7 @@ internal class PixKeyRemoveEndpointTest {
     lateinit var pixKeyRepository: PixKeyRepository
 
     @field:Inject
-    lateinit var grpcClient: KeymanagerRemoveGrpcServiceGrpc.KeymanagerRemoveGrpcServiceBlockingStub
+    lateinit var grpcClient: KeymanagerRemoveServiceGrpc.KeymanagerRemoveServiceBlockingStub
 
     @Test
     fun `should delete registered key`() {
@@ -68,15 +67,13 @@ internal class PixKeyRemoveEndpointTest {
     }
 
     @MockBean(ChavePixBCBClient::class)
-    fun mockChavePixBCBClient(): ChavePixBCBClient {
-        return Mockito.mock(ChavePixBCBClient::class.java)
-    }
+    fun mockChavePixBCBClient() = mock(ChavePixBCBClient::class.java)
 
     @Factory
     class Clients {
         @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): KeymanagerRemoveGrpcServiceGrpc.KeymanagerRemoveGrpcServiceBlockingStub {
-            return KeymanagerRemoveGrpcServiceGrpc.newBlockingStub(channel)
+        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): KeymanagerRemoveServiceGrpc.KeymanagerRemoveServiceBlockingStub {
+            return KeymanagerRemoveServiceGrpc.newBlockingStub(channel)
         }
     }
 }

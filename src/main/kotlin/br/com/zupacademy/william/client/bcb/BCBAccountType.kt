@@ -7,13 +7,11 @@ enum class BCBAccountType(val accountType: AccountType) {
     CACC(AccountType.CONTA_CORRENTE);
 
     companion object {
+
+        private val mapping = values().associateBy(BCBAccountType::accountType)
+
         fun getType(accountType: AccountType): BCBAccountType? {
-            for (type: BCBAccountType in values()) {
-                if (type.accountType == accountType) {
-                    return type
-                }
-            }
-            return null
+            return mapping[accountType]
         }
     }
 

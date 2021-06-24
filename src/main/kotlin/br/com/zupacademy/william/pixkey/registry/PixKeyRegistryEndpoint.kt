@@ -1,10 +1,9 @@
 package br.com.zupacademy.william.pixkey.registry
 
-import br.com.zupacademy.william.KeymanagerRegistryGrpcServiceGrpc
+import br.com.zupacademy.william.KeymanagerRegistryServiceGrpc
 import br.com.zupacademy.william.RegistryRequest
 import br.com.zupacademy.william.RegistryResponse
 import br.com.zupacademy.william.pixkey.PixKeyService
-import br.com.zupacademy.william.pixkey.toModel
 import br.com.zupacademy.william.validation.interceptor.ErrorAdvice
 import io.grpc.stub.StreamObserver
 import javax.inject.Inject
@@ -13,7 +12,7 @@ import javax.inject.Singleton
 @ErrorAdvice
 @Singleton
 class PixKeyRegistryEndpoint(@field:Inject val pixKeyService: PixKeyService) :
-    KeymanagerRegistryGrpcServiceGrpc.KeymanagerRegistryGrpcServiceImplBase() {
+    KeymanagerRegistryServiceGrpc.KeymanagerRegistryServiceImplBase() {
 
     override fun registry(
         request: RegistryRequest?,

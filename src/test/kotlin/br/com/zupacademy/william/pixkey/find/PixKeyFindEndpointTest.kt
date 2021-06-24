@@ -43,7 +43,7 @@ internal class PixKeyFindEndpointTest {
     lateinit var itauCustomerAccountClient: ItauCustomerAccountClient
 
     @field:Inject
-    lateinit var grpcClient: KeymanagerFindGrpcServiceGrpc.KeymanagerFindGrpcServiceBlockingStub
+    lateinit var grpcClient: KeymanagerFindServiceGrpc.KeymanagerFindServiceBlockingStub
 
     @BeforeEach
     fun setup() {
@@ -133,7 +133,10 @@ internal class PixKeyFindEndpointTest {
             grpcClient.find(findRequest)
         }
 
-        assertEquals("NOT_FOUND: Chave Pix '${findRequest.idPix}' não encontrada para o cliente '${findRequest.idCustomer}'", response.message)
+        assertEquals(
+            "NOT_FOUND: Chave Pix '${findRequest.idPix}' não encontrada para o cliente '${findRequest.idCustomer}'",
+            response.message
+        )
         assertEquals(Status.NOT_FOUND.code, response.status.code)
     }
 
@@ -173,29 +176,25 @@ internal class PixKeyFindEndpointTest {
             grpcClient.find(findRequest)
         }
 
-        assertEquals("NOT_FOUND: '${pixKey.accountType}' não encontrada para cliente '${findRequest.idCustomer}'" , response.message)
+        assertEquals(
+            "NOT_FOUND: '${pixKey.accountType}' não encontrada para cliente '${findRequest.idCustomer}'",
+            response.message
+        )
         assertEquals(Status.NOT_FOUND.code, response.status.code)
     }
 
 
     @MockBean(ItauCustomerAccountClient::class)
-    fun ItauCustomerAccountClient(): ItauCustomerAccountClient {
-        return mock(ItauCustomerAccountClient::class.java)
-    }
+    fun ItauCustomerAccountClient() = mock(ItauCustomerAccountClient::class.java)
 
     @MockBean(ChavePixBCBClient::class)
-    fun mockChavePixBCBClient(): ChavePixBCBClient {
-        return mock(ChavePixBCBClient::class.java)
-    }
+    fun mockChavePixBCBClient() = mock(ChavePixBCBClient::class.java)
 
     @Factory
     class Clients {
         @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel):
-                KeymanagerFindGrpcServiceGrpc.KeymanagerFindGrpcServiceBlockingStub {
-
-            return KeymanagerFindGrpcServiceGrpc.newBlockingStub(channel)
-        }
+        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel) =
+            KeymanagerFindServiceGrpc.newBlockingStub(channel)
     }
 
 }

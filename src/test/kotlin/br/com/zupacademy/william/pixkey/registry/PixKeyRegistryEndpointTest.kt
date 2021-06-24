@@ -2,7 +2,7 @@ package br.com.zupacademy.william.pixkey.registry
 
 import br.com.zupacademy.william.AccountType
 import br.com.zupacademy.william.KeyType
-import br.com.zupacademy.william.KeymanagerRegistryGrpcServiceGrpc
+import br.com.zupacademy.william.KeymanagerRegistryServiceGrpc
 import br.com.zupacademy.william.RegistryRequest
 import br.com.zupacademy.william.client.bcb.ChavePixBCBClient
 import br.com.zupacademy.william.client.bcb.CreatePixKeyResponse
@@ -41,7 +41,7 @@ import javax.inject.Singleton
 internal class PixKeyRegistryEndpointTest {
 
     @field:Inject
-    lateinit var grpcClient: KeymanagerRegistryGrpcServiceGrpc.KeymanagerRegistryGrpcServiceBlockingStub
+    lateinit var grpcClient: KeymanagerRegistryServiceGrpc.KeymanagerRegistryServiceBlockingStub
 
     @field:Inject
     @field:Client
@@ -62,19 +62,19 @@ internal class PixKeyRegistryEndpointTest {
         pixKeyRepository.deleteAll()
     }
 
-    val request = RegistryRequest.newBuilder()
-        .setIdCliente(UUID.randomUUID().toString())
-        .setTipoChave(KeyType.PHONE)
-        .setValorChave("+5515988778899")
-        .setTipoConta(AccountType.CONTA_CORRENTE)
+    private val request: RegistryRequest = RegistryRequest.newBuilder()
+        .setIdCustomer(UUID.randomUUID().toString())
+        .setKeyType(KeyType.PHONE)
+        .setKeyValue("+5515988778899")
+        .setAccountType(AccountType.CONTA_CORRENTE)
         .build()
 
     @Test
     fun `should registry a new pix key`() {
         `when`(
             itauCustomerAccountClient.findCustomerAccount(
-                request.idCliente,
-                br.com.zupacademy.william.pixkey.AccountType.valueOf(request.tipoConta.toString())
+                request.idCustomer,
+                br.com.zupacademy.william.pixkey.AccountType.valueOf(request.accountType.toString())
             )
         ).thenReturn(
             HttpResponse.ok(
@@ -89,7 +89,7 @@ internal class PixKeyRegistryEndpointTest {
         )
 
         `when`(bcbClient.registryKey(any()))
-            .thenReturn(HttpResponse.created(CreatePixKeyResponse(request.valorChave)))
+            .thenReturn(HttpResponse.created(CreatePixKeyResponse(request.keyValue)))
 
 //        val spy = spy(pixKeyRepository)
         val response = grpcClient.registry(request)
@@ -117,7 +117,7 @@ internal class PixKeyRegistryEndpointTest {
         }
 
         with(response) {
-            assertEquals("ALREADY_EXISTS: Chave pix '${request.valorChave}' já está cadastrada", message)
+            assertEquals("ALREADY_EXISTS: Chave pix '${request.keyValue}' já está cadastrada", message)
             assertEquals(Status.ALREADY_EXISTS.code, status.code)
         }
     }
@@ -132,7 +132,7 @@ internal class PixKeyRegistryEndpointTest {
         }
 
         with(response) {
-            assertEquals("NOT_FOUND: 'CONTA_CORRENTE' não encontrada para cliente '${request.idCliente}'", message)
+            assertEquals("NOT_FOUND: 'CONTA_CORRENTE' não encontrada para cliente '${request.idCustomer}'", message)
             assertEquals(Status.NOT_FOUND.code, status.code)
         }
     }
@@ -152,7 +152,7 @@ internal class PixKeyRegistryEndpointTest {
 
         with(response) {
             assertEquals(
-                "ALREADY_EXISTS: A chave '${request.valorChave}' já foi registrada em outra instituição",
+                "ALREADY_EXISTS: A chave '${request.keyValue}' já foi registrada em outra instituição",
                 message
             )
             assertEquals(Status.ALREADY_EXISTS.code, status.code)
@@ -163,10 +163,10 @@ internal class PixKeyRegistryEndpointTest {
     fun `should throw exception by invalid id customer`() {
 
         val request = RegistryRequest.newBuilder()
-            .setIdCliente("not a valid uuid")
-            .setTipoChave(KeyType.PHONE)
-            .setValorChave("+5515981476877")
-            .setTipoConta(AccountType.CONTA_CORRENTE)
+            .setIdCustomer("not a valid uuid")
+            .setKeyType(KeyType.PHONE)
+            .setKeyValue("+5515981476877")
+            .setAccountType(AccountType.CONTA_CORRENTE)
             .build()
 
         val response = assertThrows<StatusRuntimeException> {
@@ -178,20 +178,16 @@ internal class PixKeyRegistryEndpointTest {
     }
 
     @MockBean(ItauCustomerAccountClient::class)
-    fun itauCustomerAccountClientMock(): ItauCustomerAccountClient {
-        return Mockito.mock(ItauCustomerAccountClient::class.java)
-    }
+    fun itauCustomerAccountClientMock() = mock(ItauCustomerAccountClient::class.java)
 
     @MockBean(ChavePixBCBClient::class)
-    fun chavePixBCBClient(): ChavePixBCBClient {
-        return Mockito.mock(ChavePixBCBClient::class.java)
-    }
+    fun chavePixBCBClient() = mock(ChavePixBCBClient::class.java)
 
     @Factory
     class Clients {
         @Singleton
-        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): KeymanagerRegistryGrpcServiceGrpc.KeymanagerRegistryGrpcServiceBlockingStub {
-            return KeymanagerRegistryGrpcServiceGrpc.newBlockingStub(channel)
+        fun blockingStub(@GrpcChannel(GrpcServerChannel.NAME) channel: ManagedChannel): KeymanagerRegistryServiceGrpc.KeymanagerRegistryServiceBlockingStub {
+            return KeymanagerRegistryServiceGrpc.newBlockingStub(channel)
         }
     }
 }

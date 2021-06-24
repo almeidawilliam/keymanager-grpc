@@ -1,6 +1,6 @@
 package br.com.zupacademy.william.validation.interceptor
 
-import br.com.zupacademy.william.CorpoDeErro
+import br.com.zupacademy.william.ErrorBody
 import br.com.zupacademy.william.ErrorDetails
 import br.com.zupacademy.william.exception.AccountNotFoundException
 import br.com.zupacademy.william.exception.BusinessException
@@ -56,13 +56,13 @@ class ErrorInterceptor : MethodInterceptor<Any, Any> {
         val errors = e.constraintViolations
             .map { error ->
                 ErrorDetails.newBuilder()
-                    .setCampo(error.propertyPath.toString())
-                    .setErro(error.message)
+                    .setField(error.propertyPath.toString())
+                    .setMessage(error.message)
                     .build()
             }
             .toList()
 
-        val corpoDeErro = CorpoDeErro.newBuilder()
+        val corpoDeErro = ErrorBody.newBuilder()
             .addAllErrors(errors)
             .build()
 
